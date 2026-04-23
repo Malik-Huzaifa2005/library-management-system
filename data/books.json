@@ -1,0 +1,74 @@
+[
+  {
+    "id": "b001",
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "category": "Fiction",
+    "isbn": "978-0743273565",
+    "quantity": 5,
+    "available": 5,
+    "publishedYear": 1925,
+    "description": "A story of wealth, love, and the American Dream in the 1920s.",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "b002",
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "category": "Classic",
+    "isbn": "978-0061935466",
+    "quantity": 3,
+    "available": 2,
+    "publishedYear": 1960,
+    "description": "A powerful story of racial injustice and childhood innocence in the American South.",
+    "createdAt": "2024-01-02T00:00:00.000Z"
+  },
+  {
+    "id": "b003",
+    "title": "1984",
+    "author": "George Orwell",
+    "category": "Dystopian",
+    "isbn": "978-0451524935",
+    "quantity": 4,
+    "available": 4,
+    "publishedYear": 1949,
+    "description": "A chilling dystopian novel about a totalitarian society and the fight for truth.",
+    "createdAt": "2024-01-03T00:00:00.000Z"
+  },
+  {
+    "id": "b004",
+    "title": "Harry Potter and the Sorcerer's Stone",
+    "author": "J.K. Rowling",
+    "category": "Fantasy",
+    "isbn": "978-0439708180",
+    "quantity": 6,
+    "available": 5,
+    "publishedYear": 1997,
+    "description": "The beginning of the magical journey of Harry Potter at Hogwarts School.",
+    "createdAt": "2024-01-04T00:00:00.000Z"
+  },
+  {
+    "id": "b005",
+    "title": "The Alchemist",
+    "author": "Paulo Coelho",
+    "category": "Philosophy",
+    "isbn": "978-0062315007",
+    "quantity": 4,
+    "available": 4,
+    "publishedYear": 1988,
+    "description": "A philosophical novel about following your dreams and personal legend.",
+    "createdAt": "2024-01-05T00:00:00.000Z"
+  },
+  {
+    "id": "b006",
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "category": "Technology",
+    "isbn": "978-0132350884",
+    "quantity": 3,
+    "available": 3,
+    "publishedYear": 2008,
+    "description": "A handbook of agile software craftsmanship for writing clean, readable code.",
+    "createdAt": "2024-01-06T00:00:00.000Z"
+  }
+]

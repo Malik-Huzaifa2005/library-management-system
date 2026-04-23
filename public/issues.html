@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Issue / Return — LibraryPro</title>
+  <meta name="description" content="Issue books to members and manage book returns." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container-xl">
+    <a class="navbar-brand" href="index.html"><i class="bi bi-book-half"></i> LibraryPro</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <i class="bi bi-list text-white fs-4"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house me-1"></i>Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="books.html"><i class="bi bi-journal-bookmark me-1"></i>Books</a></li>
+        <li class="nav-item"><a class="nav-link" href="users.html"><i class="bi bi-people me-1"></i>Members</a></li>
+        <li class="nav-item"><a class="nav-link active" href="issues.html"><i class="bi bi-arrow-left-right me-1"></i>Issue/Return</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container-xl">
+    <h1><i class="bi bi-arrow-left-right me-2" style="color:var(--warning)"></i>Issue / Return Books</h1>
+    <p>Issue books to members and manage book returns.</p>
+  </div>
+</div>
+
+<div class="container-xl pb-5">
+  <div class="row g-4">
+    <!-- Issue Form -->
+    <div class="col-lg-4">
+      <div class="card mb-4">
+        <div class="card-header"><i class="bi bi-arrow-up-right-circle me-2 text-warning"></i>Issue a Book</div>
+        <div class="card-body">
+          <form id="issueForm">
+            <div class="mb-3">
+              <label class="form-label">Select Book <span class="text-danger">*</span></label>
+              <select id="issueBookId" class="form-select" required>
+                <option value="">Loading books…</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Select Member <span class="text-danger">*</span></label>
+              <select id="issueUserId" class="form-select" required>
+                <option value="">Loading members…</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Due Date</label>
+              <input type="date" id="issueDueDate" class="form-control" />
+              <div class="form-text" style="color:var(--text-muted)">Defaults to 14 days from today</div>
+            </div>
+            <button type="submit" class="btn btn-warning w-100" id="issueBtn">
+              <i class="bi bi-arrow-up-right-circle me-1"></i> Issue Book
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="card">
+        <div class="card-header"><i class="bi bi-bar-chart me-2 text-info"></i>Quick Stats</div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between py-2 border-bottom" style="border-color:var(--card-border)!important">
+            <span style="color:var(--text-muted)">Total Records</span>
+            <strong id="qs-total">—</strong>
+          </div>
+          <div class="d-flex justify-content-between py-2 border-bottom" style="border-color:var(--card-border)!important">
+            <span style="color:var(--text-muted)">Currently Issued</span>
+            <strong style="color:var(--warning)" id="qs-issued">—</strong>
+          </div>
+          <div class="d-flex justify-content-between py-2">
+            <span style="color:var(--text-muted)">Returned</span>
+            <strong style="color:var(--success)" id="qs-returned">—</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Records Table -->
+    <div class="col-lg-8">
+      <!-- Filter -->
+      <div class="search-bar">
+        <div class="row g-2">
+          <div class="col-md-6">
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+              <input type="text" id="searchInput" class="form-control" placeholder="Search book or member…" />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <select id="statusFilter" class="form-select">
+              <option value="all">All Status</option>
+              <option value="Issued">Issued</option>
+              <option value="Returned">Returned</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <button id="searchBtn" class="btn btn-warning w-100"><i class="bi bi-search me-1"></i>Search</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span><i class="bi bi-table me-2"></i>Issue / Return Records</span>
+          <span id="issues-count" class="badge" style="background:rgba(245,158,11,.2);color:var(--warning);font-size:.85rem">Loading…</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover" id="issuesTable">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Book Title</th>
+                  <th>Member</th>
+                  <th>Issue Date</th>
+                  <th>Due Date</th>
+                  <th>Return Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="issuesBody">
+                <tr><td colspan="8"><div class="spinner-wrap"><div class="spinner-border"></div></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title text-danger"><i class="bi bi-trash me-2"></i>Delete Record</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body"><p>Delete this issue record? This cannot be undone.</p></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button id="confirmDeleteBtn" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer><div class="container"><p>© 2024 LibraryPro — Library Management System</p></div></footer>
+<div id="toast-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/issues.js"></script>
+</body>
+</html>

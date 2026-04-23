@@ -1,0 +1,57 @@
+[
+  {
+    "id": "u001",
+    "name": "Alice Johnson",
+    "email": "alice.johnson@email.com",
+    "phone": "555-0101",
+    "membershipType": "Premium",
+    "joinDate": "2024-01-10T00:00:00.000Z",
+    "status": "Active",
+    "address": "123 Maple Street, Springfield",
+    "createdAt": "2024-01-10T00:00:00.000Z"
+  },
+  {
+    "id": "u002",
+    "name": "Bob Martinez",
+    "email": "bob.martinez@email.com",
+    "phone": "555-0102",
+    "membershipType": "Standard",
+    "joinDate": "2024-02-05T00:00:00.000Z",
+    "status": "Active",
+    "address": "456 Oak Avenue, Riverside",
+    "createdAt": "2024-02-05T00:00:00.000Z"
+  },
+  {
+    "id": "u003",
+    "name": "Carol Williams",
+    "email": "carol.williams@email.com",
+    "phone": "555-0103",
+    "membershipType": "Student",
+    "joinDate": "2024-03-15T00:00:00.000Z",
+    "status": "Active",
+    "address": "789 Pine Road, Lakewood",
+    "createdAt": "2024-03-15T00:00:00.000Z"
+  },
+  {
+    "id": "u004",
+    "name": "David Chen",
+    "email": "david.chen@email.com",
+    "phone": "555-0104",
+    "membershipType": "Premium",
+    "joinDate": "2024-01-20T00:00:00.000Z",
+    "status": "Inactive",
+    "address": "321 Elm Street, Greenville",
+    "createdAt": "2024-01-20T00:00:00.000Z"
+  },
+  {
+    "id": "u005",
+    "name": "Emma Davis",
+    "email": "emma.davis@email.com",
+    "phone": "555-0105",
+    "membershipType": "Standard",
+    "joinDate": "2024-04-01T00:00:00.000Z",
+    "status": "Active",
+    "address": "654 Cedar Lane, Hillside",
+    "createdAt": "2024-04-01T00:00:00.000Z"
+  }
+]

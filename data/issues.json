@@ -1,0 +1,26 @@
+[
+  {
+    "id": "i001",
+    "bookId": "b002",
+    "bookTitle": "To Kill a Mockingbird",
+    "userId": "u001",
+    "userName": "Alice Johnson",
+    "issueDate": "2024-04-10T00:00:00.000Z",
+    "dueDate": "2024-04-24T00:00:00.000Z",
+    "returnDate": null,
+    "status": "Issued",
+    "createdAt": "2024-04-10T00:00:00.000Z"
+  },
+  {
+    "id": "i002",
+    "bookId": "b004",
+    "bookTitle": "Harry Potter and the Sorcerer's Stone",
+    "userId": "u003",
+    "userName": "Carol Williams",
+    "issueDate": "2024-04-05T00:00:00.000Z",
+    "dueDate": "2024-04-19T00:00:00.000Z",
+    "returnDate": "2024-04-18T00:00:00.000Z",
+    "status": "Returned",
+    "createdAt": "2024-04-05T00:00:00.000Z"
+  }
+]
