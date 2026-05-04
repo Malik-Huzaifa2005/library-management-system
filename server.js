@@ -1,7 +1,7 @@
 // =============================================================
 // server.js
 // Main entry point for the Library Management System backend
-// Configures Express, middleware, routes, and starts the server
+// Configures Express, middleware, routes, MongoDB, and starts the server
 // =============================================================
 
 // Load environment variables from .env file
@@ -12,6 +12,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 
 // Import custom middleware
 const logger = require('./middleware/logger');
@@ -71,14 +72,32 @@ app.get('*', (req, res) => {
 // ── Global Error Handler (must be LAST middleware) ─────────────
 app.use(errorHandler);
 
-// ── Start Server ───────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log('\x1b[36m%s\x1b[0m', '━'.repeat(50));
-  console.log('\x1b[32m✔ Library Management System\x1b[0m');
-  console.log(`\x1b[36m  Server running on: http://localhost:${PORT}\x1b[0m`);
-  console.log(`\x1b[36m  API Base URL:      http://localhost:${PORT}/api\x1b[0m`);
-  console.log(`\x1b[36m  Environment:       ${process.env.NODE_ENV || 'development'}\x1b[0m`);
-  console.log('\x1b[36m%s\x1b[0m', '━'.repeat(50));
-});
+// ── Connect to MongoDB, then Start Server ──────────────────────
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  console.error('\x1b[31m✖ MONGODB_URI not found in environment variables!\x1b[0m');
+  console.error('  Please set MONGODB_URI in your .env file');
+  process.exit(1);
+}
+
+mongoose.connect(MONGODB_URI)
+  .then(() => {
+    console.log('\x1b[32m✔ Connected to MongoDB Atlas\x1b[0m');
+
+    app.listen(PORT, () => {
+      console.log('\x1b[36m%s\x1b[0m', '━'.repeat(50));
+      console.log('\x1b[32m✔ Library Management System\x1b[0m');
+      console.log(`\x1b[36m  Server running on: http://localhost:${PORT}\x1b[0m`);
+      console.log(`\x1b[36m  API Base URL:      http://localhost:${PORT}/api\x1b[0m`);
+      console.log(`\x1b[36m  Database:          MongoDB Atlas\x1b[0m`);
+      console.log(`\x1b[36m  Environment:       ${process.env.NODE_ENV || 'development'}\x1b[0m`);
+      console.log('\x1b[36m%s\x1b[0m', '━'.repeat(50));
+    });
+  })
+  .catch((err) => {
+    console.error('\x1b[31m✖ MongoDB connection failed:\x1b[0m', err.message);
+    process.exit(1);
+  });
 
 module.exports = app;
