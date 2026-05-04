@@ -475,6 +475,31 @@ strong { color: var(--text-main); font-weight: 600; }
   box-shadow: var(--shadow-glass);
 }
 
+/* ── Dropdown Menus ─────────────────────────────────────────── */
+.dropdown-menu {
+  background: var(--bg-surface) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+  padding: 0.5rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.dropdown-item {
+  color: var(--text-main) !important;
+  border-radius: 8px;
+  padding: 0.55rem 1rem;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.dropdown-item:hover, .dropdown-item:focus {
+  background: rgba(255,255,255,0.08) !important;
+  color: var(--text-main) !important;
+}
+.dropdown-item i {
+  opacity: 0.7;
+}
+
 .search-bar .input-group-text {
   background: rgba(0,0,0,0.2) !important;
   border: 1px solid rgba(255,255,255,0.1) !important;

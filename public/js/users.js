@@ -173,3 +173,120 @@ document.getElementById('searchInput').addEventListener('keydown', (e) => {
 });
 
 loadUsers();
+
+// ============================================================
+// IMPORT / EXPORT FUNCTIONALITY
+// ============================================================
+
+function downloadFile(content, filename, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function toCSV(data) {
+  if (!data.length) return '';
+  const headers = ['name','email','phone','membershipType','status','address'];
+  const rows = data.map(u => headers.map(h => {
+    let val = u[h] ?? '';
+    val = String(val).replace(/"/g, '""');
+    return `"${val}"`;
+  }).join(','));
+  return [headers.join(','), ...rows].join('\n');
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+  return lines.slice(1).map(line => {
+    const values = [];
+    let current = '', inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') { inQuotes = !inQuotes; continue; }
+      if (ch === ',' && !inQuotes) { values.push(current.trim()); current = ''; continue; }
+      current += ch;
+    }
+    values.push(current.trim());
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = values[i] || ''; });
+    return obj;
+  });
+}
+
+// ── Export as CSV ──────────────────────────────────────────────
+document.getElementById('exportCSV').addEventListener('click', async (e) => {
+  e.preventDefault();
+  try {
+    const res = await fetch(API);
+    const json = await res.json();
+    if (!json.data?.length) { showToast('No members to export', 'info'); return; }
+    downloadFile(toCSV(json.data), 'members_export.csv', 'text/csv');
+    showToast(`Exported ${json.data.length} members as CSV`, 'success');
+  } catch (err) { showToast('Export failed: ' + err.message, 'error'); }
+});
+
+// ── Export as JSON ─────────────────────────────────────────────
+document.getElementById('exportJSON').addEventListener('click', async (e) => {
+  e.preventDefault();
+  try {
+    const res = await fetch(API);
+    const json = await res.json();
+    if (!json.data?.length) { showToast('No members to export', 'info'); return; }
+    const clean = json.data.map(({ name, email, phone, membershipType, status, address }) =>
+      ({ name, email, phone, membershipType, status, address }));
+    downloadFile(JSON.stringify(clean, null, 2), 'members_export.json', 'application/json');
+    showToast(`Exported ${clean.length} members as JSON`, 'success');
+  } catch (err) { showToast('Export failed: ' + err.message, 'error'); }
+});
+
+// ── Import CSV ────────────────────────────────────────────────
+document.getElementById('importFileCSV').addEventListener('change', async (e) => {
+  const file = e.target.files[0]; if (!file) return;
+  try {
+    const text = await file.text();
+    const users = parseCSV(text);
+    if (!users.length) { showToast('CSV file is empty or invalid', 'error'); return; }
+    let added = 0;
+    for (const u of users) {
+      if (!u.name || !u.email) continue;
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(u),
+      });
+      const j = await res.json();
+      if (j.success) added++;
+    }
+    showToast(`Imported ${added} members from CSV`, 'success');
+    loadUsers();
+  } catch (err) { showToast('Import failed: ' + err.message, 'error'); }
+  e.target.value = '';
+});
+
+// ── Import JSON ───────────────────────────────────────────────
+document.getElementById('importFileJSON').addEventListener('change', async (e) => {
+  const file = e.target.files[0]; if (!file) return;
+  try {
+    const text = await file.text();
+    const users = JSON.parse(text);
+    if (!Array.isArray(users) || !users.length) { showToast('JSON file is empty or invalid', 'error'); return; }
+    let added = 0;
+    for (const u of users) {
+      if (!u.name || !u.email) continue;
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(u),
+      });
+      const j = await res.json();
+      if (j.success) added++;
+    }
+    showToast(`Imported ${added} members from JSON`, 'success');
+    loadUsers();
+  } catch (err) { showToast('Import failed: ' + err.message, 'error'); }
+  e.target.value = '';
+});

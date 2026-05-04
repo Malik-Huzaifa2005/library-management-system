@@ -35,9 +35,34 @@
         <h1><i class="bi bi-journal-bookmark me-2" style="color:var(--primary-light)"></i>Books Management</h1>
         <p>Add, view, update, and delete books in your library collection.</p>
       </div>
-      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookModal" id="addBookBtn">
-        <i class="bi bi-plus-lg me-1"></i> Add New Book
-      </button>
+      <div class="d-flex gap-2 flex-wrap">
+        <!-- Import -->
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+            <i class="bi bi-upload me-1"></i>Import
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#" onclick="document.getElementById('importFileCSV').click()"><i class="bi bi-filetype-csv me-2"></i>Import CSV</a></li>
+            <li><a class="dropdown-item" href="#" onclick="document.getElementById('importFileJSON').click()"><i class="bi bi-filetype-json me-2"></i>Import JSON</a></li>
+          </ul>
+        </div>
+        <!-- Export -->
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+            <i class="bi bi-download me-1"></i>Export
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#" id="exportCSV"><i class="bi bi-filetype-csv me-2"></i>Export as CSV</a></li>
+            <li><a class="dropdown-item" href="#" id="exportJSON"><i class="bi bi-filetype-json me-2"></i>Export as JSON</a></li>
+          </ul>
+        </div>
+        <!-- Add -->
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookModal" id="addBookBtn">
+          <i class="bi bi-plus-lg me-1"></i> Add New Book
+        </button>
+      </div>
+      <input type="file" id="importFileCSV" accept=".csv" hidden />
+      <input type="file" id="importFileJSON" accept=".json" hidden />
     </div>
   </div>
 </div>
@@ -80,7 +105,7 @@
   <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
       <span><i class="bi bi-table me-2"></i>All Books</span>
-      <span id="books-count" class="badge" style="background:rgba(79,70,229,.2);color:var(--primary-light);font-size:.85rem">Loading…</span>
+      <span id="books-count" class="badge" style="background:rgba(139,92,246,.15);color:var(--primary-glow);font-size:.85rem">Loading…</span>
     </div>
     <div class="card-body p-0">
       <div class="table-responsive">

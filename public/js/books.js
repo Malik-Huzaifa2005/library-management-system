@@ -199,3 +199,123 @@ document.getElementById('searchInput').addEventListener('keydown', (e) => {
 
 // ── Initial Load ───────────────────────────────────────────────
 loadBooks();
+
+// ============================================================
+// IMPORT / EXPORT FUNCTIONALITY
+// ============================================================
+
+// ── Helper: Download a file ────────────────────────────────────
+function downloadFile(content, filename, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── Helper: Convert array of objects to CSV string ─────────────
+function toCSV(data) {
+  if (!data.length) return '';
+  const headers = ['title','author','category','isbn','quantity','available','publishedYear','description'];
+  const rows = data.map(b => headers.map(h => {
+    let val = b[h] ?? '';
+    val = String(val).replace(/"/g, '""');
+    return `"${val}"`;
+  }).join(','));
+  return [headers.join(','), ...rows].join('\n');
+}
+
+// ── Helper: Parse CSV string to array of objects ───────────────
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+  return lines.slice(1).map(line => {
+    const values = [];
+    let current = '', inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') { inQuotes = !inQuotes; continue; }
+      if (ch === ',' && !inQuotes) { values.push(current.trim()); current = ''; continue; }
+      current += ch;
+    }
+    values.push(current.trim());
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = values[i] || ''; });
+    return obj;
+  });
+}
+
+// ── Export as CSV ──────────────────────────────────────────────
+document.getElementById('exportCSV').addEventListener('click', async (e) => {
+  e.preventDefault();
+  try {
+    const res = await fetch(API);
+    const json = await res.json();
+    if (!json.data?.length) { showToast('No books to export', 'info'); return; }
+    downloadFile(toCSV(json.data), 'books_export.csv', 'text/csv');
+    showToast(`Exported ${json.data.length} books as CSV`, 'success');
+  } catch (err) { showToast('Export failed: ' + err.message, 'error'); }
+});
+
+// ── Export as JSON ─────────────────────────────────────────────
+document.getElementById('exportJSON').addEventListener('click', async (e) => {
+  e.preventDefault();
+  try {
+    const res = await fetch(API);
+    const json = await res.json();
+    if (!json.data?.length) { showToast('No books to export', 'info'); return; }
+    const clean = json.data.map(({ title, author, category, isbn, quantity, available, publishedYear, description }) =>
+      ({ title, author, category, isbn, quantity, available, publishedYear, description }));
+    downloadFile(JSON.stringify(clean, null, 2), 'books_export.json', 'application/json');
+    showToast(`Exported ${clean.length} books as JSON`, 'success');
+  } catch (err) { showToast('Export failed: ' + err.message, 'error'); }
+});
+
+// ── Import CSV ────────────────────────────────────────────────
+document.getElementById('importFileCSV').addEventListener('change', async (e) => {
+  const file = e.target.files[0]; if (!file) return;
+  try {
+    const text = await file.text();
+    const books = parseCSV(text);
+    if (!books.length) { showToast('CSV file is empty or invalid', 'error'); return; }
+    let added = 0;
+    for (const b of books) {
+      if (!b.title || !b.author || !b.category) continue;
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...b, quantity: parseInt(b.quantity) || 1 }),
+      });
+      const j = await res.json();
+      if (j.success) added++;
+    }
+    showToast(`Imported ${added} books from CSV`, 'success');
+    loadBooks();
+  } catch (err) { showToast('Import failed: ' + err.message, 'error'); }
+  e.target.value = '';
+});
+
+// ── Import JSON ───────────────────────────────────────────────
+document.getElementById('importFileJSON').addEventListener('change', async (e) => {
+  const file = e.target.files[0]; if (!file) return;
+  try {
+    const text = await file.text();
+    const books = JSON.parse(text);
+    if (!Array.isArray(books) || !books.length) { showToast('JSON file is empty or invalid', 'error'); return; }
+    let added = 0;
+    for (const b of books) {
+      if (!b.title || !b.author || !b.category) continue;
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...b, quantity: parseInt(b.quantity) || 1 }),
+      });
+      const j = await res.json();
+      if (j.success) added++;
+    }
+    showToast(`Imported ${added} books from JSON`, 'success');
+    loadBooks();
+  } catch (err) { showToast('Import failed: ' + err.message, 'error'); }
+  e.target.value = '';
+});
