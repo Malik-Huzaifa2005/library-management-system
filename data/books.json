@@ -1,17 +1,5 @@
 [
   {
-    "id": "b001",
-    "title": "The Great Gatsby",
-    "author": "F. Scott Fitzgerald",
-    "category": "Fiction",
-    "isbn": "978-0743273565",
-    "quantity": 5,
-    "available": 5,
-    "publishedYear": 1925,
-    "description": "A story of wealth, love, and the American Dream in the 1920s.",
-    "createdAt": "2024-01-01T00:00:00.000Z"
-  },
-  {
     "id": "b002",
     "title": "To Kill a Mockingbird",
     "author": "Harper Lee",
@@ -70,5 +58,17 @@
     "publishedYear": 2008,
     "description": "A handbook of agile software craftsmanship for writing clean, readable code.",
     "createdAt": "2024-01-06T00:00:00.000Z"
+  },
+  {
+    "id": "bbe67d98f",
+    "title": "sadassadsa",
+    "author": "sadsa",
+    "category": "Dystopian",
+    "isbn": "21345",
+    "quantity": 1,
+    "available": 1,
+    "publishedYear": null,
+    "description": "2134235rraw",
+    "createdAt": "2026-05-04T04:21:53.511Z"
   }
 ]

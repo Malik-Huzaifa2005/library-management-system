@@ -130,23 +130,27 @@
         <div class="card-body">
           <div class="row g-3">
             <div class="col-6 col-md-3">
-              <a href="books.html" class="btn btn-primary w-100 py-3 d-flex flex-column align-items-center gap-2">
-                <i class="bi bi-plus-circle fs-3"></i><span>Add Book</span>
+              <a href="books.html" class="action-card primary">
+                <div class="icon-wrap"><i class="bi bi-journal-plus"></i></div>
+                <span>Add Book</span>
               </a>
             </div>
             <div class="col-6 col-md-3">
-              <a href="users.html" class="btn btn-info w-100 py-3 d-flex flex-column align-items-center gap-2">
-                <i class="bi bi-person-plus fs-3"></i><span>Add Member</span>
+              <a href="users.html" class="action-card info">
+                <div class="icon-wrap"><i class="bi bi-person-plus-fill"></i></div>
+                <span>Add Member</span>
               </a>
             </div>
             <div class="col-6 col-md-3">
-              <a href="issues.html" class="btn btn-warning w-100 py-3 d-flex flex-column align-items-center gap-2">
-                <i class="bi bi-arrow-up-right-circle fs-3"></i><span>Issue Book</span>
+              <a href="issues.html" class="action-card warning">
+                <div class="icon-wrap"><i class="bi bi-arrow-up-right-circle"></i></div>
+                <span>Issue Book</span>
               </a>
             </div>
             <div class="col-6 col-md-3">
-              <a href="issues.html" class="btn btn-success w-100 py-3 d-flex flex-column align-items-center gap-2">
-                <i class="bi bi-arrow-down-left-circle fs-3"></i><span>Return Book</span>
+              <a href="issues.html" class="action-card success">
+                <div class="icon-wrap"><i class="bi bi-arrow-down-left-circle"></i></div>
+                <span>Return Book</span>
               </a>
             </div>
           </div>
@@ -194,7 +198,7 @@
       if (!books.length) { el.innerHTML = '<div class="empty-state"><i class="bi bi-book"></i><p>No books yet</p></div>'; return; }
       el.innerHTML = books.map(b => `
         <div class="activity-item px-3">
-          <div class="activity-icon" style="background:rgba(79,70,229,.15);color:var(--primary-light)"><i class="bi bi-book-fill"></i></div>
+          <div class="activity-icon" style="background:rgba(139,92,246,0.15);color:var(--primary-glow)"><i class="bi bi-journal-text"></i></div>
           <div class="activity-text flex-grow-1">
             <strong>${b.title}</strong>
             <span>${b.author} &nbsp;·&nbsp; <span class="badge ${b.available > 0 ? 'badge-available' : 'badge-unavailable'}">${b.available}/${b.quantity} available</span></span>

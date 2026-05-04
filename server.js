@@ -7,19 +7,19 @@
 // Load environment variables from .env file
 require('dotenv').config();
 
-const express    = require('express');
+const express = require('express');
 const bodyParser = require('body-parser');
-const cors       = require('cors');
-const path       = require('path');
-const morgan     = require('morgan');
+const cors = require('cors');
+const path = require('path');
+const morgan = require('morgan');
 
 // Import custom middleware
-const logger       = require('./middleware/logger');
+const logger = require('./middleware/logger');
 const errorHandler = require('./middleware/errorHandler');
 
 // Import route modules
-const bookRoutes  = require('./routes/bookRoutes');
-const userRoutes  = require('./routes/userRoutes');
+const bookRoutes = require('./routes/bookRoutes');
+const userRoutes = require('./routes/userRoutes');
 const issueRoutes = require('./routes/issueRoutes');
 
 // ── Initialize Express App ─────────────────────────────────────
@@ -48,8 +48,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ── API Routes ─────────────────────────────────────────────────
 // All API routes are prefixed with /api
-app.use('/api/books',  bookRoutes);
-app.use('/api/users',  userRoutes);
+app.use('/api/books', bookRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/issues', issueRoutes);
 
 // ── Health Check Route ─────────────────────────────────────────
